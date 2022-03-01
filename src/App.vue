@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Miniature Photo Album</h1>
+    <add-mini-photo-batch></add-mini-photo-batch>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AddMiniPhotoBatch from './components/AddMiniPhotoBatch.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    AddMiniPhotoBatch
   }
 }
 </script>
