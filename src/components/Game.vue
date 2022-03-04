@@ -1,5 +1,9 @@
 <template>
     <div class='game-display'>
+        <md-dialog md-open-from="#fab" md-close-to="#fab" ref="dialog2">
+            <create-mini-for-game-form @close="closeDialog('dialog2')" :gameId="game.id"></create-mini-for-game-form>
+        </md-dialog>
+
         <div v-if="game.id" class="flex-row">
             <img v-bind:src="transformUrl(game.boxArtUrl)" class='image'>
             <div class='game-details'>
@@ -29,10 +33,10 @@ import { fetchGame } from '../services/games.service'
 import { fetchMinisForGame } from '../services/minis.service'
 import Card from './Card.vue'
 import { transformUrl } from '../utility-scripts/transformurl';
-
+import CreateMiniForGameForm from './CreateMiniForGame.vue';
 
 export default {
-  components: { Card },
+  components: { Card, CreateMiniForGameForm },
   name: 'Game',
     created() {
     this.$watch(
@@ -50,7 +54,15 @@ export default {
                     this.minis = result;
                 });
         },
-        transformUrl
+        transformUrl,
+        openDialog(ref) {
+            console.log('opening')
+            this.$refs[ref].open();
+        },
+        closeDialog(ref) {
+            this.$refs[ref].close();
+            this.fetchData(this.$route.params.id) 
+        }
     },
     data() {
         return {
