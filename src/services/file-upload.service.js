@@ -1,17 +1,13 @@
-import * as axios from 'axios';
+import httpCommon from '../http-common';
 
-const BASE_URL = 'http://localhost:3001';
+// const BASE_URL = 'https://localhost:7066';
 
-function upload(formData) {
-    const url = `${BASE_URL}/photos/upload`;
-    formData.forEach((img) => img);
-    console.log(url);
-    console.log(axios);
-    return true;
-    // return axios.post(url, formData)
-    //     .then(x => x.data)
-    //     .then(x => x.map(img => Object.assign({},
-    //         img, { url: `${BASE_URL}/images/${img.id}`})));
+async function upload(file, url) {
+    console.log(file);
+    return httpCommon.post(url, file)
+        // .then(x => x.data)
+        // .then(x => x.map(img => Object.assign({},
+        //     img, { url: `${BASE_URL}/images/${img.id}`})));
 }
 
 export { upload }
