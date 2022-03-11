@@ -60,7 +60,7 @@
             {
                 this.currentImage = this.$refs.file.files.item(0);
                 this.previewImage = URL.createObjectURL(this.currentImage);
-                // TODO: show the preview image
+                // TODO: #4 show the preview image for adding box art to game
             },
             createGame()
             {

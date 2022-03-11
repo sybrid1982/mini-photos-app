@@ -4,7 +4,7 @@
             <create-mini-for-game-form @close="closeDialog('dialog2')" :gameId="game.id"></create-mini-for-game-form>
         </md-dialog>
 
-        <div v-if="game.id" class="flex-row">
+        <div v-if="game.id && game.id > 0" class="flex-row">
             <img v-bind:src="transformUrl(game.boxArtUrl)" class='image'>
             <div class='game-details'>
                 <h3>Game: {{game.gameName}}</h3>
@@ -18,8 +18,8 @@
                 v-for="mini in minis"
                 :key="mini.id"
                 :details="mini.miniName"
-                :imgSrc="mini.miniName"
-                @click="navigateToGame(game.id)"
+                :imgSrc="mini.coverPhoto"
+                @click="navigateToMini(mini.id)"
             />
         </div>
         <md-button class="md-fab md-fab-bottom-right" id="fab" @click="openDialog('dialog2')">
@@ -46,13 +46,7 @@ export default {
     },
     methods: {
         fetchData(id) {
-            fetchGame(id).then(result => this.game = result);
-            // fetching minis should also include the filename of an image (first/priority)
-            // need to change the object to include that?  Or new api?
-            fetchMinisForGame(id).then(result => 
-                {
-                    this.minis = result;
-                });
+            fetchGame(id).then(response => this.processGame(response));
         },
         transformUrl,
         openDialog(ref) {
@@ -62,6 +56,30 @@ export default {
         closeDialog(ref) {
             this.$refs[ref].close();
             this.fetchData(this.$route.params.id) 
+        },
+        navigateToMini(miniId) {
+            console.log(miniId);
+        },
+        processGame(response) {
+            if (response && response.id) {
+                this.game = response;
+                fetchMinisForGame(this.game.id).then(minis => this.processMinisForGame(minis));
+            } else {
+                // we didn't get a game back
+                // TODO: #5 404 page?
+                this.game = {
+                    id: -1,
+                    gameName: "404",
+                    boxArtUrl: ""
+                }
+                this.minis = [];
+            }
+        },
+        processMinisForGame(minis) {
+            this.minis = minis.map((mini) => {
+                const coverPhoto = mini.fileNames.length ? mini.fileNames[0] : '';
+                return {...mini, coverPhoto: this.transformUrl(coverPhoto)}
+            })
         }
     },
     data() {

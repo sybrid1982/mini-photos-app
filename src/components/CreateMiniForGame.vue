@@ -52,7 +52,7 @@
             {
                 this.currentImage = this.$refs.file.files.item(0);
                 this.previewImage = URL.createObjectURL(this.currentImage);
-                // TODO: show the preview image
+                // TODO: #3 show the preview image for adding mini photos
             },
             createMini()
             {
