@@ -87,7 +87,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
     .mini-container {
         display:flex;
         flex-direction: row;

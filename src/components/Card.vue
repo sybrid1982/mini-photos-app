@@ -17,7 +17,7 @@ export default {
     props: ['details', 'imgSrc']
 }
 </script>
-<style>
+<style scoped>
     .card-body {
         margin: 25px;
         width: 250px;

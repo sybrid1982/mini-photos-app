@@ -57,7 +57,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
     .games-display {
         display: flex;
         flex-direction: row;

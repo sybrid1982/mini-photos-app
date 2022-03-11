@@ -11,7 +11,7 @@
             </div>
         </div>
         <div v-if="mini.fileNames.length > 0" class="photo-row">
-            <img  v-for="photo in mini.fileNames" :key=photo v-bind:src="transformUrl(photo)">
+            <img v-for="photo in mini.fileNames" :key=photo v-bind:src="transformUrl(photo)" class="image">
         </div>
         <!-- <md-button class="md-fab md-fab-bottom-right" id="fab" @click="openDialog('dialog2')">
             <md-icon>add</md-icon>
@@ -42,7 +42,15 @@ export default {
     }
 }
 </script>
-
-<style>
-
+<style scoped>
+.photo-row {
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+}
+.photo-row img.image {
+    max-width: 250px;
+    margin: 10px;
+    box-shadow: 5px 3px 6px #333;
+}
 </style>
