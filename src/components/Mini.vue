@@ -47,6 +47,7 @@ export default {
     display: flex;
     flex-direction: row;
     padding: 15px;
+    flex-wrap: wrap;
 }
 .photo-row img.image {
     max-width: 250px;
