@@ -39,10 +39,7 @@ export default {
   components: { Card, CreateMiniForGameForm },
   name: 'Game',
     created() {
-    this.$watch(
-        () => { 
-            this.fetchData(this.$route.params.id) 
-        })
+        this.$watch(() => { this.fetchData(this.$route.params.id) })
     },
     methods: {
         fetchData(id) {
@@ -58,7 +55,7 @@ export default {
             this.fetchData(this.$route.params.id) 
         },
         navigateToMini(miniId) {
-            console.log(miniId);
+            this.$router.push(`/mini/${miniId}`)
         },
         processGame(response) {
             if (response && response.id) {
