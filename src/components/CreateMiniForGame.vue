@@ -16,7 +16,7 @@
             </md-input-container>
             <md-input-container>
                 <label>Mini Photos</label>
-                <input type="file" @change="selectImage" ref="file" multiple>
+                <input type="file" accept="image/*" @change="selectImage" ref="file" capture="environment" multiple>
             </md-input-container>
             <md-button :disabled="validateInputs()" @click="createMini()">Save</md-button>
             <md-button @click="close()">Cancel</md-button>
@@ -52,7 +52,7 @@
             {
                 this.currentImage = this.$refs.file.files.item(0);
                 this.previewImage = URL.createObjectURL(this.currentImage);
-                // TODO: show the preview image
+                // TODO: #3 show the preview image for adding mini photos
             },
             createMini()
             {

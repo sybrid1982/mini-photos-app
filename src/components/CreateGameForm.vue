@@ -20,7 +20,7 @@
             </md-input-container>
             <md-input-container>
                 <label>Box Art</label>
-                <input type="file" @change="selectImage" ref="file">
+                <input type="file" accept="image/*" @change="selectImage" ref="file">
             </md-input-container>
             <md-button :disabled="validateInputs()" @click="createGame()">Save</md-button>
             <md-button @click="close()">Cancel</md-button>
@@ -60,7 +60,7 @@
             {
                 this.currentImage = this.$refs.file.files.item(0);
                 this.previewImage = URL.createObjectURL(this.currentImage);
-                // TODO: show the preview image
+                // TODO: #4 show the preview image for adding box art to game
             },
             createGame()
             {
