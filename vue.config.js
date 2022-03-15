@@ -1,5 +1,5 @@
 module.exports = {
-    outputDir: '../MiniBackend/wwwroot/dist',
+    outputDir: './dist',
     lintOnSave: true,
     productionSourceMap: false,
     filenameHashing: false,
