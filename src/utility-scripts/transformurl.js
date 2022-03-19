@@ -1,6 +1,6 @@
 export function transformUrl(url)
 {
-    const BASE_URL = 'https://localhost:7066';
+    const BASE_URL = 'https://mini-photo-backend.azurewebsites.net';
 
     if(url.length > 0) {
         return `${BASE_URL}/Images/${url}`
