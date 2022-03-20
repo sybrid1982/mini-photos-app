@@ -1,7 +1,7 @@
 <template>
     <div>
-        <md-dialog md-open-from="#fab" md-close-to="#fab" ref="dialog2">
-            <create-game-form @close="closeDialog('dialog2')"></create-game-form>
+        <md-dialog md-open-from="#fab" md-close-to="#fab" ref="game-form">
+            <create-game-form @close="closeDialog('game-form')"></create-game-form>
         </md-dialog>
         <div class='games-display'>
             <Card
@@ -11,7 +11,7 @@
                 :imgSrc="transformUrl(game.boxArtUrl)"
                 @click="navigateToGame(game.id)"
             />
-            <md-button class="md-fab md-fab-bottom-right" id="fab" @click="openDialog('dialog2')">
+            <md-button class="md-fab md-fab-bottom-right" id="fab" @click="openDialog('game-form')">
                 <md-icon>add</md-icon>
             </md-button>
         </div>
@@ -47,6 +47,7 @@ export default {
         this.$refs[ref].open();
     },
     closeDialog(ref) {
+        console.log('close emitted')
         this.$refs[ref].close();
     }
   },

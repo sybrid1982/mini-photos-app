@@ -25,14 +25,17 @@
             <md-button :disabled="validateInputs()" @click="createGame()">Save</md-button>
             <md-button @click="close()">Cancel</md-button>
         </form>
+        <loading-modal v-if="loading"></loading-modal>
     </div>
 </template>
 <script>
     import { postGame } from '../services/games.service';
     import { upload } from '../services/file-upload.service';
+    import LoadingModal from './LoadingModal.vue';
 
     export default {
         name: 'CreateGameForm',
+        components: { LoadingModal },
         data: () => ({
             form: {
                 gameName: "",
@@ -43,6 +46,7 @@
             boxArt: null,
             currentImage: undefined,
             previewImage: undefined,
+            loading: false
         }),
         methods: {
             validateInputs()
@@ -64,6 +68,7 @@
             },
             createGame()
             {
+                this.loading = true;
                 if(this.currentImage) {
                     let formData = new FormData();
                     formData.append("file", this.currentImage);
@@ -71,13 +76,14 @@
                         response => {
                             console.log(response.data);
                             const filename = response.data.fileURL;
-                            postGame(this.form, filename)
+                            postGame(this.form, filename).then(() => {loading = false})
+                            this.close();
                         }
                     );
                 } else {
-                    postGame(this.form, '');
+                    postGame(this.form, '').then(() => {loading = false});
+                    this.close();
                 }
-                close();
             },
             close()
             {
@@ -95,12 +101,16 @@
 </script>
 <style>
     .create-game-form {
-        width: 500px;
+        width: 270px;
         padding: 20px;
         margin: 20px;
         border: 1px solid black;
         border-radius: 4px;
     }
+    .create-game-form md-dialog-title {
+        text-align: center;
+    }
+
     .short {
         width: 150px;
     }

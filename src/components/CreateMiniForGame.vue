@@ -21,14 +21,17 @@
             <md-button :disabled="validateInputs()" @click="createMini()">Save</md-button>
             <md-button @click="close()">Cancel</md-button>
         </form>
+        <loading-modal v-if="loading"></loading-modal>
     </div>
 </template>
 <script>
     import { createMiniForGame } from '../services/minis.service';
     import { upload } from '../services/file-upload.service';
+    import LoadingModal from './LoadingModal.vue'
 
     export default {
         name: 'CreateMiniForGameForm',
+        components: { LoadingModal },
         props: ['gameId'],
         data: () => ({
             form: {
@@ -38,6 +41,7 @@
             },
             currentImage: undefined,
             previewImage: undefined,
+            loading: false
         }),
         methods: {
             validateInputs()
@@ -56,6 +60,7 @@
             },
             createMini()
             {
+                this.loading = true;
                 let completionDateDate
                 if(this.form.completionDate.length == 0) {
                     completionDateDate = new Date(); 
@@ -90,6 +95,7 @@
                     style: "",
                     scale: ""
                 }
+                this.loading = false;
                 this.$emit('close');
             }
         }
@@ -97,11 +103,14 @@
 </script>
 <style>
     .create-game-form {
-        width: 500px;
+        width: 270px;
         padding: 20px;
         margin: 20px;
         border: 1px solid black;
         border-radius: 4px;
+    }
+    .create-game-form md-dialog-title {
+        text-align: center;
     }
     .short {
         width: 150px;
