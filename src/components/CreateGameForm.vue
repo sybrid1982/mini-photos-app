@@ -76,12 +76,12 @@
                         response => {
                             console.log(response.data);
                             const filename = response.data.fileURL;
-                            postGame(this.form, filename).then(() => {loading = false})
+                            postGame(this.form, filename).then(() => {this.loading = false})
                             this.close();
                         }
                     );
                 } else {
-                    postGame(this.form, '').then(() => {loading = false});
+                    postGame(this.form, '').then(() => {this.loading = false});
                     this.close();
                 }
             },
