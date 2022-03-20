@@ -21,7 +21,7 @@ export default {
     .card-body {
         margin: 25px;
         width: 250px;
-        height: 308px;
+        height: 330px;
         cursor: pointer;
     }
     .card-image {

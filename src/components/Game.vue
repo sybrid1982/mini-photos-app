@@ -108,5 +108,6 @@ export default {
     .image {
         border: 1px solid #333;
         box-shadow: 5px 3px 6px #333;
+        max-height: 300px;
     }
 </style>
