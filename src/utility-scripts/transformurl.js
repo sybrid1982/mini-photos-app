@@ -2,10 +2,10 @@ export function transformUrl(url)
 {
     const BASE_URL = 'https://mini-photo-backend.azurewebsites.net';
 
-    if(url.length > 0) {
-        return `${BASE_URL}/Images/${url}`
+    if(url.length > 0 || url === 'string') {
+        return url
     }
     else {
-        return `${BASE_URL}/Images/no-image.png`
+        return 'no-image.png'
     }
 }

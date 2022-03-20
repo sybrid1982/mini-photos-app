@@ -70,7 +70,7 @@
                     upload(formData, '/games/photo').then(
                         response => {
                             console.log(response);
-                            const filename = response.data.fileName.split('Images/')[1];
+                            const filename = response.fileUrl;
                             postGame(this.form, filename)
                         }
                     );
