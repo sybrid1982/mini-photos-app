@@ -69,8 +69,8 @@
                     formData.append("file", this.currentImage);
                     upload(formData, '/games/photo').then(
                         response => {
-                            console.log(response);
-                            const filename = response.fileUrl;
+                            console.log(response.data);
+                            const filename = response.data.fileURL;
                             postGame(this.form, filename)
                         }
                     );
