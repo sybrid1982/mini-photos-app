@@ -1,8 +1,15 @@
 <template>
     <div class='mini-display'>
-        <!-- <md-dialog md-open-from="#fab" md-close-to="#fab" ref="dialog2">
-            <create-mini-for-game-form @close="closeDialog('dialog2')" :gameId="game.id"></create-mini-for-game-form>
-        </md-dialog> -->
+        <md-dialog md-open-from="#fab" md-close-to="#fab" ref="dialog2">
+            <div class='modal-box'>
+                <h3>Add Photo for {{mini.miniName}}</h3>
+                <md-input-container>
+                    <label>Mini Photos</label>
+                    <input type="file" accept="image/*" @change="selectImage" ref="file" capture="environment" multiple>
+                </md-input-container>
+                <md-button :disabled="hasAPhotoSelected()" @click="addPhotosToMini()">Add Photo</md-button>
+            </div>
+        </md-dialog>
         <div v-if="mini.id" class="flex-row">
             <h1>{{mini.miniName}}</h1>
             <div class='mini-details'>
@@ -13,21 +20,26 @@
         <div v-if="mini.fileNames.length > 0" class="photo-row">
             <img v-for="photo in mini.fileNames" :key=photo v-bind:src="transformUrl(photo)" class="image">
         </div>
-        <!-- <md-button class="md-fab md-fab-bottom-right" id="fab" @click="openDialog('dialog2')">
+        <md-button v-if="mini.id" class="md-fab md-fab-bottom-right" id="fab" @click="openDialog('dialog2')">
             <md-icon>add</md-icon>
-        </md-button> -->
+        </md-button>
     </div>
 </template>
 
 <script>
 import { fetchMiniById } from '../services/minis.service';
 import { transformUrl } from '../utility-scripts/transformurl';
+import { upload } from '../services/file-upload.service';
 
 export default {
     components: {},
     name: 'Mini',
     data() {
-        return { mini: {} }
+        return { 
+            mini: {},
+            currentImage: undefined,
+            previewImage: undefined
+        }
     },
     created() {
         this.$watch(() => { this.fetchData(this.$route.params.id) })
@@ -38,6 +50,36 @@ export default {
         },
         transformUrl(uri) {
             return transformUrl(uri);
+        },
+        selectImage()
+        {
+            this.currentImage = this.$refs.file.files.item(0);
+            this.previewImage = URL.createObjectURL(this.currentImage);
+            // TODO: #3 show the preview image for adding mini photos
+        },
+        openDialog(ref) {
+            this.$refs[ref].open();
+        },
+        closeDialog(ref) {
+            this.$refs[ref].close();
+        },
+        addPhotosToMini() {
+            const miniPhotos = this.$refs.file.files;
+            if(miniPhotos.length) {
+                for(let i = 0; i < miniPhotos.length; i++) 
+                {
+                    let file = miniPhotos.item(i)
+                    let formData = new FormData();
+                    formData.append("file", file);
+                    upload(formData, '/minis/photo/' + this.mini.id)
+                }
+            }
+        },
+        hasAPhotoSelected() {
+            if (!this.$refs) return false;
+            if (!this.$refs.file) return false;
+            if (!this.$refs.file.files) return false;
+            return this.$refs.file.files.length > 0;
         }
     }
 }
@@ -53,5 +95,17 @@ export default {
     max-width: 250px;
     margin: 10px;
     box-shadow: 5px 3px 6px #333;
+}
+.modal-box {
+    display: block;
+    width: 300px;
+    height: 200px;
+    border-radius: 4px;
+}
+.modal-box md-input-container {
+    padding: 10px;
+}
+h3 {
+    text-align: center;
 }
 </style>

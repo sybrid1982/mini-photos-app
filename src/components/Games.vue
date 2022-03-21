@@ -47,7 +47,6 @@ export default {
         this.$refs[ref].open();
     },
     closeDialog(ref) {
-        console.log('close emitted')
         this.$refs[ref].close();
     }
   },
