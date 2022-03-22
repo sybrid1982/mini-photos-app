@@ -2,11 +2,11 @@
     <div class='mini-display'>
         <md-dialog md-open-from="#fab" md-close-to="#fab" ref="dialog2">
             <div class='modal-box'>
-                <h3>Add Photo for {{mini.miniName}}</h3>
-                <md-input-container>
-                    <label>Mini Photos</label>
+                <h2>Add Photo for {{mini.miniName}}</h2>
+                <div class="input-container">
+                    <label for="file">Mini Photos</label>
                     <input type="file" accept="image/*" @change="selectImage" ref="file" multiple>
-                </md-input-container>
+                </div>
                 <md-button :disabled="hasAPhotoSelected()" @click="addPhotosToMini()">Add Photo</md-button>
             </div>
         </md-dialog>
@@ -102,10 +102,14 @@ export default {
     height: 200px;
     border-radius: 4px;
 }
-.modal-box md-input-container {
-    padding: 10px;
+.input-container {
+    padding: 14px;
 }
-h3 {
+
+h2 {
     text-align: center;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 14px;
+    margin-bottom: 5px;
 }
 </style>
