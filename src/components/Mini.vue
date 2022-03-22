@@ -23,6 +23,7 @@
         <md-button v-if="mini.id" class="md-fab md-fab-bottom-right" id="fab" @click="openDialog('dialog2')">
             <md-icon>add</md-icon>
         </md-button>
+        <loading-modal v-if="loading"></loading-modal>
     </div>
 </template>
 
@@ -38,7 +39,8 @@ export default {
         return { 
             mini: {},
             currentImage: undefined,
-            previewImage: undefined
+            previewImage: undefined,
+            loading: false
         }
     },
     created() {
@@ -66,12 +68,13 @@ export default {
         addPhotosToMini() {
             const miniPhotos = this.$refs.file.files;
             if(miniPhotos.length) {
+                this.loading = true;
                 for(let i = 0; i < miniPhotos.length; i++) 
                 {
                     let file = miniPhotos.item(i)
                     let formData = new FormData();
                     formData.append("file", file);
-                    upload(formData, '/minis/photo/' + this.mini.id)
+                    upload(formData, '/minis/photo/' + this.mini.id).then(() => { this.loading = false; })
                 }
             }
         },
