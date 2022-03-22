@@ -5,7 +5,7 @@
                 <h3>Add Photo for {{mini.miniName}}</h3>
                 <md-input-container>
                     <label>Mini Photos</label>
-                    <input type="file" accept="image/*" @change="selectImage" ref="file" capture="environment" multiple>
+                    <input type="file" accept="image/*" @change="selectImage" ref="file" multiple>
                 </md-input-container>
                 <md-button :disabled="hasAPhotoSelected()" @click="addPhotosToMini()">Add Photo</md-button>
             </div>
