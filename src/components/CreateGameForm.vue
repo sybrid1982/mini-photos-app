@@ -4,19 +4,19 @@
         <form enctype="multipart/form-data">
             <md-input-container md-inline>
                 <label>Game Name</label>
-                <md-input v-model="form.gameName" required></md-input>
+                <md-input v-model="form.gameName" maximum-scale=1 required></md-input>
             </md-input-container>
             <md-input-container md-inline>
                 <label>Year Published</label>
-                <md-input v-model="form.yearPublished" required></md-input>
+                <md-input v-model="form.yearPublished" maximum-scale=1 required></md-input>
             </md-input-container>
             <md-input-container md-inline>
                 <label>Style</label>
-                <md-input v-model="form.style" required></md-input>
+                <md-input v-model="form.style" maximum-scale=1 required></md-input>
             </md-input-container>
             <md-input-container md-inline>
                 <label>Scale</label>
-                <md-input v-model="form.scale" required></md-input>
+                <md-input v-model="form.scale" maximum-scale=1 required></md-input>
             </md-input-container>
             <md-input-container>
                 <label>Box Art</label>
