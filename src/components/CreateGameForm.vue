@@ -22,7 +22,7 @@
                 <label>Box Art</label>
                 <input type="file" accept="image/*" @change="selectImage" ref="file">
             </md-input-container>
-            <md-button :disabled="validateInputs()" @click="createGame()">Save</md-button>
+            <md-button :disabled="validateInputs()" @click="createGame()" class='save-button'>Save</md-button>
             <md-button @click="close()">Cancel</md-button>
         </form>
         <loading-modal v-if="loading"></loading-modal>
@@ -53,6 +53,8 @@
             {
                 if(this.form.gameName.length > 0 && 
                     this.form.yearPublished.length > 0 &&
+                    this.form.yearPublished.length < 5 &&
+                    Number(this.form.yearPublished) == this.form.yearPublished &&
                     this.form.style.length > 0 &&
                     this.form.scale.length > 0) 
                 {
@@ -74,7 +76,6 @@
                     formData.append("file", this.currentImage);
                     upload(formData, '/games/photo').then(
                         response => {
-                            console.log(response.data);
                             const filename = response.data.fileURL;
                             postGame(this.form, filename).then(() => {this.loading = false})
                             this.close();
