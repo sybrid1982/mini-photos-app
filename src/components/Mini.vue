@@ -32,12 +32,10 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <div v-if="mini.id" class="flex-row">
+        <div v-if="mini.id" class="flex-column">
             <h1>{{mini.miniName}}</h1>
-            <div class='mini-details'>
-                <h3>Sculptor: {{mini.sculptor}}</h3>
-                <h3>Completion Date: {{mini.completionDate}}</h3>
-            </div>
+            <h3>Sculptor: {{mini.sculptor}}</h3>
+            <h3>Completion Date: {{mini.completionDate}}</h3>
         </div>
         <div v-if="mini && mini.fileNames && mini.fileNames.length > 0" class="photo-row">
             <img v-for="photo in mini.fileNames" :key=photo v-bind:src="transformUrl(photo)" class="image">
@@ -113,6 +111,11 @@ export default {
 }
 </script>
 <style scoped>
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .photo-row {
     display: flex;
     flex-direction: row;
