@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="create-game-form">
         <v-card class='padded'>
             <v-card-title>Add Game</v-card-title>
             <form enctype="multipart/form-data">
@@ -7,13 +7,21 @@
                 <v-text-field label="Year Published" v-model="form.yearPublished" required></v-text-field>
                 <v-text-field label="Style" v-model="form.style" required></v-text-field>
                 <v-text-field label="Scale" v-model="form.scale" required></v-text-field>
-                <input type="file" accept="image/*" @change="selectImage" ref="file">
+                <v-file-input 
+                    label="Box Art" 
+                    accept="image/*"
+                    @change="selectImage"
+                    small-chips
+                    v-model="image"
+                    ref="file"></v-file-input>
+                <img class="preview-box" v-bind:src="previewImage"/>
                 <v-spacer class="space-down"></v-spacer>
                 <v-card-actions>
-                    <v-btn :disabled="validateInputs()" @click="createGame()" class='save-button'>Save</v-btn>
+                    <v-btn color="blue lighten-3" :disabled="validateInputs()" @click="createGame()" class='save-button'>Save</v-btn>
                     <v-btn @click="close()">Cancel</v-btn>
                 </v-card-actions>
             </form>
+            
         </v-card>
         <loading-modal v-if="loading"></loading-modal>
     </div>
@@ -37,7 +45,8 @@
             currentImage: undefined,
             previewImage: undefined,
             loading: false,
-            menu: false
+            menu: false,
+            image: null
         }),
         methods: {
             validateInputs()
@@ -55,7 +64,8 @@
             },
             selectImage()
             {
-                this.currentImage = this.$refs.file.files.item(0);
+                if(!this.image) return;
+                this.currentImage = this.image;
                 this.previewImage = URL.createObjectURL(this.currentImage);
                 // TODO: #4 show the preview image for adding box art to game
             },
@@ -93,20 +103,12 @@
 </script>
 <style scoped>
     .create-game-form {
-        width: 270px;
-        padding: 20px;
-        margin: 20px;
-        border: 1px solid black;
-        border-radius: 4px;
+        width: 250px;
     }
     .padded {
         padding: 0px 15px;
     }
-    .create-game-form v-dialog-title {
-        text-align: center;
-    }
-
-    .short {
-        width: 150px;
+    .preview-box {
+        width: 80px;
     }
 </style>

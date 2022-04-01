@@ -1,9 +1,9 @@
 <template>
     <div class='mini-display'>
-        <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" width="auto" ref="game-form">
+        <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" width="auto" v-model="dialog">
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                    color="red lighten-2"
+                    color="red lighten-1"
                     fab
                     dark
                     absolute
@@ -12,26 +12,32 @@
                     v-bind="attrs"
                     v-on="on"
                     >
-                        <v-icon>mdi-plus</v-icon>
+                    <v-icon>mdi-plus</v-icon>
                 </v-btn>
             </template>
-            <v-card>
+            <v-card class="add-photo-modal">
                 <v-card-title>Add Photo for {{mini.miniName}}</v-card-title>
-                <div class="input-container">
-                    <label for="file">Mini Photos</label>
-                    <input type="file" accept="image/*" @change="selectImage" ref="file" multiple>
-                </div>
-                <v-btn :disabled="hasAPhotoSelected()" @click="addPhotosToMini()">Add Photo</v-btn>
+                <v-file-input 
+                    label="Mini Photos" 
+                    accept="image/*"
+                    @change="selectImage"
+                    small-chips
+                    v-model="images"
+                    ref="file" multiple></v-file-input>
+                <img class="preview-box" v-bind:src="previewImage"/>
+                <v-spacer></v-spacer>
+                <v-card-actions>
+                    <v-btn color="blue lighten-3" :disabled="!hasAPhotoSelected()" @click="addPhotosToMini()">Add Photo</v-btn>
+                    <v-btn @click="closeDialog()">Cancel</v-btn>
+                </v-card-actions>
             </v-card>
         </v-dialog>
-        <div v-if="mini.id" class="flex-row">
+        <div v-if="mini.id" class="flex-column">
             <h1>{{mini.miniName}}</h1>
-            <div class='mini-details'>
-                <h3>Sculptor: {{mini.sculptor}}</h3>
-                <h3>Completion Date: {{mini.completionDate}}</h3>
-            </div>
+            <h3>Sculptor: {{mini.sculptor}}</h3>
+            <h3>Completion Date: {{mini.completionDate}}</h3>
         </div>
-        <div v-if="mini.fileNames.length > 0" class="photo-row">
+        <div v-if="mini && mini.fileNames && mini.fileNames.length > 0" class="photo-row">
             <img v-for="photo in mini.fileNames" :key=photo v-bind:src="transformUrl(photo)" class="image">
         </div>
         <loading-modal v-if="loading"></loading-modal>
@@ -51,7 +57,9 @@ export default {
             mini: {},
             currentImage: undefined,
             previewImage: undefined,
-            loading: false
+            loading: false,
+            images: [],
+            dialog: false
         }
     },
     created() {
@@ -66,18 +74,23 @@ export default {
         },
         selectImage()
         {
-            this.currentImage = this.$refs.file.files.item(0);
+            if(!this.images || !this.images.length) {
+                this.currentImage = undefined;
+                this.previewImage = undefined;
+                return;
+            }
+            this.currentImage = this.images[0];
             this.previewImage = URL.createObjectURL(this.currentImage);
             // TODO: #3 show the preview image for adding mini photos
         },
-        openDialog(ref) {
-            this.$refs[ref].open();
-        },
-        closeDialog(ref) {
-            this.$refs[ref].close();
+        closeDialog() {
+            this.dialog = false;
+            this.images = [];
+            this.currentImage = undefined;
+            this.previewImage = undefined;
         },
         addPhotosToMini() {
-            const miniPhotos = this.$refs.file.files;
+            const miniPhotos = this.images;
             if(miniPhotos.length) {
                 this.loading = true;
                 for(let i = 0; i < miniPhotos.length; i++) 
@@ -88,17 +101,21 @@ export default {
                     upload(formData, '/minis/photo/' + this.mini.id).then(() => { this.loading = false; })
                 }
             }
+            this.closeDialog();
         },
         hasAPhotoSelected() {
-            if (!this.$refs) return false;
-            if (!this.$refs.file) return false;
-            if (!this.$refs.file.files) return false;
-            return this.$refs.file.files.length > 0;
+            if (!this.images) return false;
+            return this.images.length > 0;
         }
     }
 }
 </script>
 <style scoped>
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .photo-row {
     display: flex;
     flex-direction: row;
@@ -110,11 +127,9 @@ export default {
     margin: 10px;
     box-shadow: 5px 3px 6px #333;
 }
-.modal-box {
-    display: block;
+.add-photo-modal {
     width: 300px;
-    height: 200px;
-    border-radius: 4px;
+    padding: 0 15px;
 }
 .input-container {
     padding: 14px;
@@ -128,5 +143,8 @@ h2 {
 }
 .short {
     width: 250px !important;
+}
+.preview-box {
+    width: 80px;
 }
 </style>

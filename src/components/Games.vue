@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" width="auto" ref="game-form">
+        <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" width="auto" v-model="dialog">
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     color="red lighten-2"
@@ -15,7 +15,7 @@
                         <v-icon>mdi-plus</v-icon>
                 </v-btn>
             </template>
-            <create-game-form @close="closeDialog('game-form')"></create-game-form>
+            <create-game-form @close="closeDialog()"></create-game-form>
         </v-dialog>
         <div class='games-display'>
             <Card
@@ -60,17 +60,15 @@ export default {
         this.$router.push(`games/${event}`)
     },
     transformUrl,
-    openDialog(ref) {
-        this.$refs[ref].open();
-    },
-    closeDialog(ref) {
-        this.$refs[ref].close();
+    closeDialog() {
+        this.dialog = false;
     }
   },
   data() {
       return {
           games: [],
-          loading: false
+          loading: false,
+          dialog: false
       }
   }
 }

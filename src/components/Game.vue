@@ -1,6 +1,6 @@
 <template>
     <div class='game-display'>
-        <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" width="auto" ref="game-form">
+        <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" width="auto" v-model="dialog">
             <template v-slot:activator="{ on, attrs }">
                 <v-btn
                     color="red lighten-2"
@@ -15,7 +15,7 @@
                         <v-icon>mdi-plus</v-icon>
                 </v-btn>
             </template>
-            <create-mini-for-game-form @close="closeDialog('dialog2')" :gameId="game.id"></create-mini-for-game-form>
+            <create-mini-for-game-form @close="closeDialog()" :gameId="game.id"></create-mini-for-game-form>
         </v-dialog>
 
         <div v-if="game.id && game.id > 0" class="flex-row">
@@ -64,12 +64,8 @@ export default {
                 });
         },
         transformUrl,
-        openDialog(ref) {
-            console.log('opening')
-            this.$refs[ref].open();
-        },
-        closeDialog(ref) {
-            this.$refs[ref].close();
+        closeDialog() {
+            this.dialog = false;
             this.fetchData(this.$route.params.id) 
         },
         navigateToMini(miniId) {
@@ -101,7 +97,8 @@ export default {
         return {
             game: {},
             minis: [],
-            loading: false
+            loading: false,
+            dialog: false
         }
     }
 }
