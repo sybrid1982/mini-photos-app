@@ -21,13 +21,13 @@
                     label="Mini Photos" 
                     accept="image/*"
                     @change="selectImage"
-                    small-chips="true"
+                    small-chips
                     v-model="images"
                     ref="file" multiple></v-file-input>
-                <img v-bind:src="previewImage"/>
+                <img class="preview-box" v-bind:src="previewImage"/>
                 <v-spacer></v-spacer>
                 <v-card-actions>
-                    <v-btn color="blue lighten-3" :disabled="hasAPhotoSelected()" @click="addPhotosToMini()">Add Photo</v-btn>
+                    <v-btn color="blue lighten-3" :disabled="!hasAPhotoSelected()" @click="addPhotosToMini()">Add Photo</v-btn>
                     <v-btn @click="closeDialog()">Cancel</v-btn>
                 </v-card-actions>
             </v-card>
@@ -39,7 +39,7 @@
                 <h3>Completion Date: {{mini.completionDate}}</h3>
             </div>
         </div>
-        <div v-if="mini.fileNames.length > 0" class="photo-row">
+        <div v-if="mini && mini.fileNames && mini.fileNames.length > 0" class="photo-row">
             <img v-for="photo in mini.fileNames" :key=photo v-bind:src="transformUrl(photo)" class="image">
         </div>
         <loading-modal v-if="loading"></loading-modal>
@@ -76,19 +76,20 @@ export default {
         },
         selectImage()
         {
-            if(!this.images) {
+            if(!this.images || !this.images.length) {
                 this.currentImage = undefined;
                 this.previewImage = undefined;
+                return;
             }
-            this.currentImage = this.$images[0];
+            this.currentImage = this.images[0];
             this.previewImage = URL.createObjectURL(this.currentImage);
             // TODO: #3 show the preview image for adding mini photos
         },
-        openDialog(ref) {
-            this.$refs[ref].open();
-        },
         closeDialog() {
             this.dialog = false;
+            this.images = [];
+            this.currentImage = undefined;
+            this.previewImage = undefined;
         },
         addPhotosToMini() {
             const miniPhotos = this.images;
@@ -105,10 +106,8 @@ export default {
             this.closeDialog();
         },
         hasAPhotoSelected() {
-            if (!this.$refs) return false;
-            if (!this.$refs.file) return false;
-            if (!this.$refs.file.files) return false;
-            return this.$refs.file.files.length > 0;
+            if (!this.images) return false;
+            return this.images.length > 0;
         }
     }
 }
@@ -141,5 +140,8 @@ h2 {
 }
 .short {
     width: 250px !important;
+}
+.preview-box {
+    width: 80px;
 }
 </style>
