@@ -51,7 +51,7 @@
                         label="Mini Photos" 
                         accept="image/*"
                         @change="selectImage"
-                        small-chips="true"
+                        small-chips
                         v-model="images"
                         ref="file" multiple></v-file-input>
                 </form>
@@ -59,7 +59,7 @@
             </div>
             <v-spacer class="space-down"></v-spacer>
             <v-card-actions>
-                <v-btn :disabled="validateInputs()" @click="createMini()">Save</v-btn>
+                <v-btn color="blue lighten-3" :disabled="validateInputs()" @click="createMini()">Save</v-btn>
                 <v-btn @click="close()">Cancel</v-btn>
             </v-card-actions>
         </v-card>

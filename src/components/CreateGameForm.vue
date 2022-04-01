@@ -11,7 +11,7 @@
                     label="Box Art" 
                     accept="image/*"
                     @change="selectImage"
-                    small-chips="true"
+                    small-chips
                     v-model="image"
                     ref="file"></v-file-input>
                 <img class="preview-box" v-bind:src="previewImage"/>
