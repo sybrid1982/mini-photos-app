@@ -1,86 +1,57 @@
 <template>
-  <div id="app">
-    <!-- <h1>Miniature Photo Album</h1>
-    <div class="below-header">
-      <div class="sidebar">
-        <router-link to="/games" class='nav-item'>Games</router-link>
-        <router-link to="/" class='nav-item'>Minis</router-link>
-      </div>
-      <div class="content">
-        <router-view ></router-view>
-      </div>
-    </div> -->
-    <md-toolbar>
-      <md-button class="md-icon-button" @click="toggleLeftSidenav">
-        <md-icon>menu</md-icon>
-      </md-button>
-      <h1 class="md-title">Mini Paint Log</h1>
-    </md-toolbar>
-    <md-sidenav class="md-left" ref="leftSidenav">
-      <md-toolbar class="md-large">
-        <div class="md-toolbar-container">
-          <h3 class="md-title">Navigation</h3>
-        </div>
-      </md-toolbar>
-      <md-list>
-        <md-list-item>
-          <router-link to="/games" class='nav-item'><md-icon>move_to_inbox</md-icon> <span>Games</span></router-link>
-        </md-list-item>
-        <md-list-item>
-          <router-link to="/" class='nav-item'><md-icon>move_to_inbox</md-icon> <span>Minis</span></router-link>
-        </md-list-item>
-      </md-list>
-    </md-sidenav>
-    <div class="main-content">
-      <router-view ></router-view>
-    </div>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      color="primary"
+      dark
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-spacer></v-spacer>
+      <v-toolbar-title>Mini Paint Log</v-toolbar-title>
+    </v-app-bar>
+
+<v-navigation-drawer
+      v-model="drawer"
+      absolute
+      bottom
+      temporary
+    >
+      <v-list
+        nav
+        dense
+      >
+        <v-list-item-group
+          active-class="deep-purple--text text--accent-4"
+        >
+          <v-list-item>
+            <router-link to="/games" class='nav-item'>
+              <v-list-item-title>Games</v-list-item-title>
+            </router-link>
+          </v-list-item>
+
+          <v-list-item>
+            <router-link to="/" class='nav-item'>
+              <v-list-item-title>Miniatures</v-list-item-title>
+            </router-link>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
 export default {
   name: 'App',
+
   components: {
   },
-  methods: {
-    toggleLeftSidenav() {
-      this.$refs.leftSidenav.toggle();
-    }
-  }
-}
+
+  data: () => ({
+    drawer: true,
+  }),
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 0px;
-}
-
-.below-header {
-  display: flex;
-  flex-direction: row;
-}
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  background-color: #358fd4;
-}
-.nav-item {
-  padding: 10px;
-  margin: 2px;
-  font-size: 24px;
-  text-decoration: none;
-  color: #d4d4d4;
-}
-.nav-item:hover {
-    background-color: #5ebaff;
-}
-.content {
-  border-left: 2px solid #39607d;
-  border-top: 2px solid #39607d;
-}
-</style>

@@ -1,26 +1,60 @@
 <template>
-    <div class="create-game-form">
-        <md-dialog-title>Add Mini</md-dialog-title>
-        <form enctype="multipart/form-data">
-            <md-input-container md-inline>
-                <label>Mini Name</label>
-                <md-input v-model="form.miniName" required></md-input>
-            </md-input-container>
-            <md-input-container md-inline>
-                <label>Sculptor</label>
-                <md-input v-model="form.sculptor"></md-input>
-            </md-input-container>
-            <md-input-container md-inline>
-                <label>Completion Date</label>
-                <md-input v-model="form.completionDate"></md-input>
-            </md-input-container>
-            <md-input-container>
+    <div class="create-mini-form">
+        <v-card class='padded'>
+            <v-card-title class="centered">Add Mini</v-card-title>
+            <form enctype="multipart/form-data">
+                <v-text-field label="Mini Name" v-model="form.miniName" required></v-text-field>
+                <v-text-field label="Sculptor" v-model="form.sculptor"></v-text-field>
+                <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="form.completionDate"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="form.completionDate"
+                            label="Picker in menu"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                    </template>
+                    <v-date-picker
+                    v-model="form.completionDate"
+                    no-title
+                    scrollable
+                    >
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="menu = false"
+                        >
+                            Cancel
+                        </v-btn>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(date)"
+                        >
+                            OK
+                        </v-btn>
+                    </v-date-picker>
+                </v-menu>
                 <label>Mini Photos</label>
                 <input type="file" accept="image/*" @change="selectImage" ref="file" capture="environment" multiple>
-            </md-input-container>
-            <md-button :disabled="validateInputs()" @click="createMini()">Save</md-button>
-            <md-button @click="close()">Cancel</md-button>
-        </form>
+            </form>
+            <v-spacer class="space-down"></v-spacer>
+            <v-card-actions>
+                <v-btn :disabled="validateInputs()" @click="createMini()">Save</v-btn>
+                <v-btn @click="close()">Cancel</v-btn>
+            </v-card-actions>
+        </v-card>
         <loading-modal v-if="loading"></loading-modal>
     </div>
 </template>
@@ -37,11 +71,12 @@
             form: {
                 miniName: "",
                 sculptor: "",
-                completionDate: "",
+                date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
             },
             currentImage: undefined,
             previewImage: undefined,
-            loading: false
+            loading: false,
+            menu: false,
         }),
         methods: {
             validateInputs()
@@ -101,18 +136,17 @@
         }
     }
 </script>
-<style>
-    .create-game-form {
-        width: 270px;
-        padding: 20px;
-        margin: 20px;
-        border: 1px solid black;
-        border-radius: 4px;
+<style scoped>
+    .create-mini-form {
+        width: 290px;
     }
-    .create-game-form md-dialog-title {
+    .create-mini-form v-dialog-title {
         text-align: center;
     }
-    .short {
-        width: 150px;
+    .padded {
+        padding: 0px 15px;
+    }
+    .space-down {
+        padding: 5px;
     }
 </style>

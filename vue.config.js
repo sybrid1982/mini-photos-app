@@ -3,11 +3,13 @@ module.exports = {
     lintOnSave: true,
     productionSourceMap: false,
     filenameHashing: false,
+
     css: {
         extract: {
             filename: '[name].css'
         }
     },
+
     configureWebpack: {
         optimization: {
             splitChunks: false
@@ -21,4 +23,8 @@ module.exports = {
             }
         }
     },
+
+    transpileDependencies: [
+      'vuetify'
+    ]
 }

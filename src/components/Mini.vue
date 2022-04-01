@@ -1,15 +1,29 @@
 <template>
     <div class='mini-display'>
-        <md-dialog md-open-from="#fab" md-close-to="#fab" ref="dialog2">
-            <div class='modal-box'>
-                <h2>Add Photo for {{mini.miniName}}</h2>
+        <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" width="auto" ref="game-form">
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    color="red lighten-2"
+                    fab
+                    dark
+                    absolute
+                    style="bottom: 16px;"
+                    right
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                        <v-icon>mdi-plus</v-icon>
+                </v-btn>
+            </template>
+            <v-card>
+                <v-card-title>Add Photo for {{mini.miniName}}</v-card-title>
                 <div class="input-container">
                     <label for="file">Mini Photos</label>
                     <input type="file" accept="image/*" @change="selectImage" ref="file" multiple>
                 </div>
-                <md-button :disabled="hasAPhotoSelected()" @click="addPhotosToMini()">Add Photo</md-button>
-            </div>
-        </md-dialog>
+                <v-btn :disabled="hasAPhotoSelected()" @click="addPhotosToMini()">Add Photo</v-btn>
+            </v-card>
+        </v-dialog>
         <div v-if="mini.id" class="flex-row">
             <h1>{{mini.miniName}}</h1>
             <div class='mini-details'>
@@ -20,9 +34,6 @@
         <div v-if="mini.fileNames.length > 0" class="photo-row">
             <img v-for="photo in mini.fileNames" :key=photo v-bind:src="transformUrl(photo)" class="image">
         </div>
-        <md-button v-if="mini.id" class="md-fab md-fab-bottom-right" id="fab" @click="openDialog('dialog2')">
-            <md-icon>add</md-icon>
-        </md-button>
         <loading-modal v-if="loading"></loading-modal>
     </div>
 </template>
@@ -114,5 +125,8 @@ h2 {
     border-bottom: 1px solid lightgray;
     padding-bottom: 14px;
     margin-bottom: 5px;
+}
+.short {
+    width: 250px !important;
 }
 </style>

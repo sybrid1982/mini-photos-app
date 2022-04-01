@@ -1,8 +1,22 @@
 <template>
     <div class='game-display'>
-        <md-dialog md-open-from="#fab" md-close-to="#fab" ref="dialog2">
+        <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" width="auto" ref="game-form">
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    color="red lighten-2"
+                    fab
+                    dark
+                    absolute
+                    right
+                    v-bind="attrs"
+                    v-on="on"
+                    style="bottom: 16px;"
+                    >
+                        <v-icon>mdi-plus</v-icon>
+                </v-btn>
+            </template>
             <create-mini-for-game-form @close="closeDialog('dialog2')" :gameId="game.id"></create-mini-for-game-form>
-        </md-dialog>
+        </v-dialog>
 
         <div v-if="game.id && game.id > 0" class="flex-row">
             <img v-bind:src="transformUrl(game.boxArtUrl)" class='image'>
@@ -22,9 +36,7 @@
                 @click="navigateToMini(mini.id)"
             />
         </div>
-        <md-button class="md-fab md-fab-bottom-right" id="fab" @click="openDialog('dialog2')">
-            <md-icon>add</md-icon>
-        </md-button>
+        <loading-modal v-if="loading"></loading-modal>
     </div>
 </template>
 
@@ -34,16 +46,22 @@ import { fetchMinisForGame } from '../services/minis.service'
 import Card from './Card.vue'
 import { transformUrl } from '../utility-scripts/transformurl';
 import CreateMiniForGameForm from './CreateMiniForGame.vue';
+import LoadingModal from './LoadingModal.vue'
 
 export default {
-  components: { Card, CreateMiniForGameForm },
+  components: { Card, CreateMiniForGameForm, LoadingModal },
   name: 'Game',
     created() {
         this.$watch(() => { this.fetchData(this.$route.params.id) })
     },
     methods: {
         fetchData(id) {
-            fetchGame(id).then(response => this.processGame(response));
+            this.loading = true;
+            fetchGame(id).then(response => 
+                {
+                    this.processGame(response)
+                    this.loading = false;   
+                });
         },
         transformUrl,
         openDialog(ref) {
@@ -82,7 +100,8 @@ export default {
     data() {
         return {
             game: {},
-            minis: []
+            minis: [],
+            loading: false
         }
     }
 }

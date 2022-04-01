@@ -1,8 +1,22 @@
 <template>
     <div>
-        <md-dialog md-open-from="#fab" md-close-to="#fab" ref="game-form">
+        <v-dialog :fullscreen="$vuetify.breakpoint.xsOnly" width="auto" ref="game-form">
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    color="red lighten-2"
+                    fab
+                    dark
+                    absolute
+                    style="bottom: 16px;"
+                    right
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                        <v-icon>mdi-plus</v-icon>
+                </v-btn>
+            </template>
             <create-game-form @close="closeDialog('game-form')"></create-game-form>
-        </md-dialog>
+        </v-dialog>
         <div class='games-display'>
             <Card
                 v-for="game in games"
@@ -11,10 +25,8 @@
                 :imgSrc="transformUrl(game.boxArtUrl)"
                 @click="navigateToGame(game.id)"
             />
-            <md-button class="md-fab md-fab-bottom-right" id="fab" @click="openDialog('game-form')">
-                <md-icon>add</md-icon>
-            </md-button>
         </div>
+        <loading-modal v-if="loading"></loading-modal>
     </div>
 </template>
 
@@ -23,9 +35,10 @@ import Card from './Card.vue'
 import CreateGameForm from './CreateGameForm.vue'
 import { fetchGames } from '../services/games.service';
 import { transformUrl } from '../utility-scripts/transformurl';
+import LoadingModal from './LoadingModal.vue';
 
 export default {
-  components: { Card, CreateGameForm },
+  components: { Card, CreateGameForm, LoadingModal },
   name: 'Games',
   created() {
     this.$watch(
@@ -36,7 +49,11 @@ export default {
   },
   methods: {
     fetchData() {
-        fetchGames().then(result => this.games = result)
+        this.loading = true;
+        fetchGames().then(result => {
+            this.loading = false;
+            this.games = result
+        })
     },
     navigateToGame(event)
     {
@@ -52,7 +69,8 @@ export default {
   },
   data() {
       return {
-          games: []
+          games: [],
+          loading: false
       }
   }
 }

@@ -1,16 +1,10 @@
 <template>
     <div @click="$emit('click')">
-        <md-card class='card-body'>
-            <md-card-media class="card-image">
-                <div class='image-container'>
-                    <img v-bind:src="imgSrc" v-bind:alt="details" class='card-image'>
-                </div>
-            </md-card-media>
+        <v-card class='card-body'>
+            <v-img v-bind:src="imgSrc" v-bind:alt="details" class='card-image'></v-img>
 
-            <md-card-header class="card-details">
-                <div class="md-title">{{details}}</div>
-            </md-card-header>
-        </md-card>
+            <v-card-title class="card-details">{{details}}</v-card-title>
+        </v-card>
     </div>
 </template>
 <script>

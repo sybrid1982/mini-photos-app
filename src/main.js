@@ -5,12 +5,11 @@ import Minis from './components/Minis.vue'
 import Game from './components/Game.vue'
 import Mini from './components/Mini.vue'
 import App from './App.vue'
-import VueMaterial from 'vue-material';
 import 'vue-material/dist/vue-material.css'
+import vuetify from './plugins/vuetify'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter);
-Vue.use(VueMaterial);
 
 const routes = [
   { path: '/', component: Minis },
@@ -26,5 +25,6 @@ const router = new VueRouter({
 
 new Vue({
   router,
-  render: h => h(App),
+  vuetify,
+  render: h => h(App)
 }).$mount('#app')
