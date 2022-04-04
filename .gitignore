@@ -21,3 +21,8 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Don't want my docker compose going up
+docker-compose.yml
+# Don't need the nginx reverse proxy going up
+nginx_proxy
