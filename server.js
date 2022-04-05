@@ -6,5 +6,5 @@ const staticFileMiddleware = express.static(__dirname + '/dist/');
 app.use(staticFileMiddleware);
 
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`)
+    console.log(`App listening on port ${port} via express`)
 });

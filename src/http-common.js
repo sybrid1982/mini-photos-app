@@ -5,8 +5,7 @@ function getBaseURL() {
         console.log(process.env.VUE_APP_BASE_API_URL)
         return process.env.VUE_APP_BASE_API_URL.toString()
     }
-    console.log('process.env.VUE_APP_BASE_API_URL was falsy')
-    return "https://localhost:7101"
+    return "/api";
 }
 
 export default axios.create({
