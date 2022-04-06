@@ -29,3 +29,7 @@ docker-compose-develop.yml
 
 # Don't need the nginx reverse proxy going up
 nginx_proxy
+
+# Don't see any reason to store the local database or blobs
+photos
+data
