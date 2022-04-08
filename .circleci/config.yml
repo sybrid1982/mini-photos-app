@@ -2,9 +2,9 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.7.0
-  azure-acr: circleci/azure-acr@1.0.0
+  azure-acr: circleci/azure-acr@0.2.0
 jobs:
-  - test: 
+  test: 
     docker:
       - image: cimg/node:17.2.0
     steps:
@@ -14,19 +14,17 @@ jobs:
       - run:
           command: npm run test:unit
           name: Run tests
-          
-  - azure-acr/build_and_push_image:
-          registry-name: sybrid
-          login-server-name: sybrid.azurecr.io
-          repo: mini-frontend
 
 workflows:
-  test_my_app:
+  test-then-build-and-push-image:
     jobs:
       - test
-      - azure-acr/build_and_push_image:
+      - azure-acr/build-and-push-image:
           requires:
             - test # only deploy if the build_and_test job has completed
           filters:
             branches:
               only: main # only deploy when on main
+          registry-name: sybrid
+          login-server-name: sybrid.azurecr.io
+          repo: mini-frontend
