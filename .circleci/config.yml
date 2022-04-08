@@ -11,13 +11,17 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: npm run test
+          command: npm run test:unit
           name: Run tests
       - run:
           command: npm run build
           name: Build app
+          
   deploy:
+    docker:
+      - image: cimg/node:17.2.0
     steps:
+      - checkout
       # build the application image
       - setup_remote_docker:
           version: 19.03.13
