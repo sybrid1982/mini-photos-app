@@ -13,3 +13,7 @@ node_modules
 
 # Don't copy the build, use the one built by the dockerfile
 dist
+
+# Don't want these subfolders either
+data
+nginx_proxy
