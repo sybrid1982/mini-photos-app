@@ -21,3 +21,15 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Don't want my docker compose going up
+docker-compose.yml
+# Can start putting this one in git once moved to azurite blob storage
+docker-compose-develop.yml
+
+# Don't need the nginx reverse proxy going up
+nginx_proxy
+
+# Don't see any reason to store the local database or blobs
+photos
+data
