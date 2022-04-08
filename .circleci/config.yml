@@ -18,7 +18,10 @@ jobs:
           name: Build app
           
   deploy:
+    docker:
+      - image: cimg/node:17.2.0
     steps:
+      - checkout
       # build the application image
       - setup_remote_docker:
           version: 19.03.13
