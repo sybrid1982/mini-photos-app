@@ -6,6 +6,7 @@
                 :key="mini.id"
                 :details="mini.miniName"
                 :imgSrc="transformUrl(mini.coverPhoto)"
+                @click="navigateToMini(mini.id)"
             />
         </div>
         <v-btn :disabled="this.page === 1"
@@ -59,7 +60,11 @@ export default {
                 return {...mini, coverPhoto: this.transformUrl(coverPhoto)}
             })
         },
-        transformUrl
+        transformUrl,
+        navigateToMini(miniId) {
+            this.$router.push(`/mini/${miniId}`)
+        },
+
     }
 }
 </script>
