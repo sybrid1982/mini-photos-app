@@ -79,7 +79,7 @@
             form: {
                 miniName: "",
                 sculptor: "",
-                date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+                completionDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
             },
             images: [],
             currentImage: undefined,
