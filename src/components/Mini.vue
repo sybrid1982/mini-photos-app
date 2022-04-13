@@ -95,7 +95,7 @@ export default {
                 this.loading = true;
                 for(let i = 0; i < miniPhotos.length; i++) 
                 {
-                    let file = miniPhotos.item(i)
+                    let file = miniPhotos[i]
                     let formData = new FormData();
                     formData.append("file", file);
                     upload(formData, '/minis/photo/' + this.mini.id).then(() => { this.loading = false; })

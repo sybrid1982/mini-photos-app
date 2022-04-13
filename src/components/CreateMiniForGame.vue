@@ -121,7 +121,7 @@
                     if(miniPhotos.length) {
                         for(let i = 0; i < miniPhotos.length; i++) 
                         {
-                            let file = miniPhotos.item(i)
+                            let file = miniPhotos[i]
                             let formData = new FormData();
                             formData.append("file", file);
                             upload(formData, '/minis/photo/' + response.id)
