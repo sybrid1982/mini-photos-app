@@ -5,16 +5,18 @@
                 v-for="mini in minis"
                 :key="mini.id"
                 :details="mini.miniName"
-                :imgSrc="transformUrl(mini.coverPhoto)"
+                :imgSrc="mini.coverPhoto"
                 @click="navigateToMini(mini.id)"
             />
         </div>
-        <v-btn :disabled="this.page === 1"
-            @click="fetchData(page - 1)"
-        >Back</v-btn>
-        <v-btn :disabled="this.page === this.maxPages"
-            @click="fetchData(page + 1)"
-        >Next</v-btn>
+        <div class="button-row">
+            <v-btn :disabled="this.page === 1"
+                @click="fetchData(page - 1)"
+            >Back</v-btn>
+            <v-btn :disabled="this.page === this.maxPages"
+                @click="fetchData(page + 1)"
+            >Next</v-btn>
+        </div>
     </div>
 </template>
 
@@ -27,31 +29,36 @@ export default {
     components: { Card },
     name: 'Minis',
     created() {
-        this.$watch(
-            () => { 
-                this.fetchData(this.page)
-            }
-        )
+        this.fetchData(this.page)
+
+        window.addEventListener('resize', this.handleResize);
+        this.handleResize();
+    },
+    destroyed() {
+        window.removeEventListener('resize', this.handleResize);
     },
     data() {
         return {
             minis: [],
             page: 1,
             loading: false,
-            maxPages: 1
+            maxPages: 1,
+            pages: {}
         }
     },
     methods: {
         fetchData(page) {
+            if(Object.keys(this.pages).includes(page.toString())) {
+                this.minis = this.pages[page];
+                return;
+            }
             this.loading = true;
-            fetchPaginatedMinis(page).then(result => {
+            this.fetchMinisPage(page).then(result => {
                 this.loading = false;
-                console.log(result);
                 this.minis = this.processMinisForDisplay(result.minis);
+                this.pages[result.currentPage] = [...this.minis];
                 this.maxPages = result.totalPages;
                 this.page = result.currentPage;
-                console.log(this.page);
-                console.log(this.maxPages);
             })
         },
         processMinisForDisplay(minis) {
@@ -64,7 +71,12 @@ export default {
         navigateToMini(miniId) {
             this.$router.push(`/mini/${miniId}`)
         },
+        fetchMinisPage(page) {
+            return fetchPaginatedMinis(page);
+        },
+        handleResize() {
 
+        }
     }
 }
 </script>
@@ -73,5 +85,11 @@ export default {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+    }
+    .button-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0px 25px;
     }
 </style>
