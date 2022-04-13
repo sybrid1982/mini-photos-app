@@ -56,7 +56,7 @@ export default {
                 return;
             }
             this.loading = true;
-            fetchPaginatedMinis(numberPerPage, page).then(result => {
+            fetchPaginatedMinis(page).then(result => {
                 this.loading = false;
                 this.minis = this.processMinisForDisplay(result.minis);
                 this.pages[page] = [...this.minis];
