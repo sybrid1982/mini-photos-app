@@ -11,10 +11,10 @@
         </div>
         <div class="button-row">
             <v-btn :disabled="this.currentPage === 1"
-                @click="fetchData(this.currentPage - 1)"
+                @click="fetchData(currentPage - 1)"
             >Back</v-btn>
             <v-btn :disabled="this.currentPage === this.maxPages"
-                @click="fetchData(this.currentPage + 1)"
+                @click="fetchData(currentPage + 1)"
             >Next</v-btn>
         </div>
     </div>
@@ -29,7 +29,7 @@ export default {
     components: { Card },
     name: 'Minis',
     created() {
-        this.fetchData(this.currentPage)
+        this.fetchData(1)
 
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
