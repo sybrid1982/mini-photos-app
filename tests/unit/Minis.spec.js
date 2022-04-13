@@ -20,11 +20,11 @@ describe('Minis', () => {
                     1: mockData
                 }
             })
-            wrapper.vm.fetchPaginatedMinis = jest.fn();
+            wrapper.vm.fetchMinisPage = jest.fn();
 
             wrapper.vm.fetchData(1);
 
-            expect(wrapper.vm.fetchPaginatedMinis).not.toHaveBeenCalled();
+            expect(wrapper.vm.fetchMinisPage).not.toHaveBeenCalled();
         });
 
         it('fetches needed pages', () => {
