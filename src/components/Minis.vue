@@ -5,7 +5,7 @@
                 v-for="mini in minis"
                 :key="mini.id"
                 :details="mini.miniName"
-                :imgSrc="transformUrl(mini.coverPhoto)"
+                :imgSrc="mini.coverPhoto"
                 @click="navigateToMini(mini.id)"
             />
         </div>
@@ -29,11 +29,8 @@ export default {
     components: { Card },
     name: 'Minis',
     created() {
-        this.$watch(
-            () => { 
-                this.fetchData(this.page)
-            }
-        )
+        this.fetchData(this.page)
+
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
     },
@@ -51,15 +48,15 @@ export default {
     },
     methods: {
         fetchData(page) {
-            if(Object.keys(this.pages).includes(page)) {
+            if(Object.keys(this.pages).includes(page.toString())) {
                 this.minis = this.pages[page];
                 return;
             }
             this.loading = true;
-            fetchPaginatedMinis(page).then(result => {
+            this.fetchMinisPage(page).then(result => {
                 this.loading = false;
                 this.minis = this.processMinisForDisplay(result.minis);
-                this.pages[page] = [...this.minis];
+                this.pages[result.currentPage] = [...this.minis];
                 this.maxPages = result.totalPages;
                 this.page = result.currentPage;
             })
@@ -73,6 +70,9 @@ export default {
         transformUrl,
         navigateToMini(miniId) {
             this.$router.push(`/mini/${miniId}`)
+        },
+        fetchMinisPage(page) {
+            return fetchPaginatedMinis(page);
         },
         handleResize() {
 
