@@ -10,11 +10,11 @@
             />
         </div>
         <div class="button-row">
-            <v-btn :disabled="this.page === 1"
-                @click="fetchData(page - 1)"
+            <v-btn :disabled="this.currentPage === 1"
+                @click="fetchData(this.currentPage - 1)"
             >Back</v-btn>
-            <v-btn :disabled="this.page === this.maxPages"
-                @click="fetchData(page + 1)"
+            <v-btn :disabled="this.currentPage === this.maxPages"
+                @click="fetchData(this.currentPage + 1)"
             >Next</v-btn>
         </div>
     </div>
@@ -29,7 +29,7 @@ export default {
     components: { Card },
     name: 'Minis',
     created() {
-        this.fetchData(this.page)
+        this.fetchData(this.currentPage)
 
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
@@ -40,7 +40,7 @@ export default {
     data() {
         return {
             minis: [],
-            page: 1,
+            currentPage: 1,
             loading: false,
             maxPages: 1,
             pages: {}
@@ -50,6 +50,7 @@ export default {
         fetchData(page) {
             if(Object.keys(this.pages).includes(page.toString())) {
                 this.minis = this.pages[page];
+                this.currentPage = page;
                 return;
             }
             this.loading = true;
@@ -58,7 +59,7 @@ export default {
                 this.minis = this.processMinisForDisplay(result.minis);
                 this.pages[result.currentPage] = [...this.minis];
                 this.maxPages = result.totalPages;
-                this.page = result.currentPage;
+                this.currentPage = result.currentPage;
             })
         },
         processMinisForDisplay(minis) {
