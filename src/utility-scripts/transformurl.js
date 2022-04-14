@@ -1,9 +1,10 @@
 export function transformUrl(url)
 {
     if(url && typeof(url) === 'string' && url.length > 0) {
-        const localDrive = "localFile";
-        console.log("url was " + url);
-        if(url.startsWith(localDrive)) return url.substring(localDrive.length);
+        const miniPhotos = 'mini-photos'
+        if(url.indexOf(miniPhotos) > 0) {
+            return url.replace(miniPhotos, "thumbs");
+        }
         return url;
     }
     else {
