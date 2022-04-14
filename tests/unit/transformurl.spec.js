@@ -1,4 +1,4 @@
-import { transformUrl } from '@/utility-scripts/transformUrl.js';
+import { transformUrl } from '@/utility-scripts/transformurl.js';
 
 describe('transformUrl', () => {
     it('should return no-image.png if given an empty string', () => {
