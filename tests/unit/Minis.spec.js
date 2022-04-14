@@ -39,7 +39,16 @@ describe('Minis', () => {
 
             expect(wrapper.vm.fetchMinisPage).toHaveBeenCalled();
         });
+    })
+    describe('processMinisForDisplay', () => {
+        it('should set cover photo to a url containing thumbs', () => {
+            const wrapper = factory({
+                pages: []
+            })
 
+            const minis = wrapper.vm.processMinisForDisplay([mockData[0]]);
+            expect(minis[0].coverPhoto.includes('thumbs')).toBeTruthy();
+        })
     })
 })
 
